@@ -27,13 +27,10 @@ Ecommerce-Automation-Sauce-Demo/
  
 
 ├── tests/ 
-
-│ ├── test_login.py 
-
-│ ├── test_inventory.py 
-
-│ └── test_checkout.py 
-
+│   ├── test_login.py 
+│   ├── test_inventory.py 
+│   ├── test_checkout.py 
+│   └── test_fuzzing.py
 │ 
 
 ├── utils/ 
@@ -60,6 +57,18 @@ Page Object Model (POM) implementation
 Explicit waits using WebDriverWait  
 
 Reusable utilities for driver setup, config, and logging  
+
+Dynamic "Fuzzy" Locators: Implemented Regex-based button detection in the BasePage to handle minor UI text changes without breaking scripts.
+
+
+**🧪 Advanced Resilience & Fuzzing Suite**
+This framework includes a dedicated Fuzzing Suite (test_fuzzing.py) to stress-test the application’s input handling.
+
+Data Generation: Uses the Faker library to inject non-deterministic data (1000+ character strings, Emojis, and SQL injection patterns) into the checkout flow.
+
+Objective: To verify the system's stability and ensure that unexpected user input does not trigger unhandled exceptions or "500 Internal Server Errors."
+
+Finding: My tests identified that while the UI handles special characters, it currently lacks front-end character limits for long strings, leading to potential layout displacement—a key insight for the development team.
 
 Allure reporting integration  
 
@@ -97,9 +106,12 @@ Run all tests:
 
 pytest -v 
 
+pytest tests/test_fuzzing.py -v
+
 Run tests with Allure report: 
 
 pytest --alluredir=reports/ 
+allure serve allure-results
 
 allure generate reports/ -o reports/html --clean 
 
@@ -126,6 +138,10 @@ Framework is modular and can be
  
 
 extended for other projects  
+
+Allure reports:
+![img.png](img.png)
+![img_1.png](img_1.png)
 
 **Author** 
 

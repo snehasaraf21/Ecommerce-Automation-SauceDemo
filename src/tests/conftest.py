@@ -1,6 +1,8 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options  # <--- THIS IS THE MISSING LINE
+import os
+
 
 
 @pytest.fixture
@@ -19,3 +21,5 @@ def driver():
     driver.get("https://www.saucedemo.com/")
     yield driver
     driver.quit()
+
+
