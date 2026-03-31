@@ -7,28 +7,30 @@ on:
     branches: [ main ]
 
 jobs:
-
   normal-tests:
     name: Core flow tests (must pass)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated to v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Updated to v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Install Chrome
         uses: browser-actions/setup-chrome@latest
 
       - name: Run core tests
-        run: pytest src/tests/test_login.py src/tests/test_inventory.py src/tests/test_checkout.py -v --alluredir=allure-results
+        # Instead of listing files, we point to the folder. 
+        # Pytest will find login, inventory, and checkout automatically.
+        run: pytest src/tests/ -v --alluredir=allure-results
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
@@ -40,14 +42,13 @@ jobs:
   ai-fuzz-tests:
     name: AI fuzz tests (expected to fail)
     runs-on: ubuntu-latest
-    continue-on-error: true
-
+    continue-on-error: true # Job-level protection
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -57,6 +58,8 @@ jobs:
       - name: Install Chrome
         uses: browser-actions/setup-chrome@latest
 
+      - name: Run AI fuzz tests
+        run: pytest src/tests/test_fuzzing.py -v
       - name: Run AI fuzz tests
         run: pytest src/tests/test_fuzzing.py -v
         continue-on-error: true
