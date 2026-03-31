@@ -7,7 +7,7 @@ from src.pages.checkout_page import CheckoutPage
 
 fake = Faker()
 
-
+@pytest.mark.fuzz
 @pytest.mark.parametrize("bad_data", [
     fake.text(max_nb_chars=1000),  # Stress-test field length
     "❤️🔥🚀",  # Test Emoji/Unicode support
