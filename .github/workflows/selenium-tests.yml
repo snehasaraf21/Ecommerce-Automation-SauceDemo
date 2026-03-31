@@ -2,10 +2,13 @@ name: Run Selenium Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
 
+# This clears the Node 20 warning by forcing Node 24
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   normal-tests:
     name: Core flow tests (must pass)
