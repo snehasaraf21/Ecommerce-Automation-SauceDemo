@@ -21,6 +21,7 @@ def driver():
 
     # Selenium 4.41.0 handles the service/manager automatically
     driver = webdriver.Chrome(options=chrome_options)
+    driver.implicitly_wait(10)
 
     driver.maximize_window()
     driver.get("https://www.saucedemo.com/")
